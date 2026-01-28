@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+/* 
+ * Daily Thirukkural - Design System v1.0
+ * Palette: Temple & Textile (Marigolds, Reds, Stones)
+ */
+
+@theme {
+  --color-primary-500: #D97706;
+  --color-primary-600: #B45309;
+  --color-secondary-500: #991B1B;
+  --color-accent-500: #0D9488;
+  --color-bg-main: #FFFCF5;
+  --color-bg-surface: #FFFFFF;
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #4B5563;
+  --color-border-soft: #E5E7EB;
+
+  --font-tamil: "Anek Tamil", sans-serif;
+  --font-english: "Inter", sans-serif;
+}
+
+:root {
+  --color-primary: #D97706;
+  --color-secondary: #991B1B;
+  --color-background: #FFFCF5;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-text-muted: #4b5563;
+
+  /* Spacing Scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+}
+
+/* Base resets and global enforcement */
+* {
+  border-radius: 0 !important;
+  /* CRITICAL: ZERO ROUNDED BORDERS */
+}
+
+body {
+  font-family: var(--font-english);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  min-height: 100vh;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tamil font support with proper line height */
+.tamil-text {
+  font-family: var(--font-tamil);
+  line-height: 1.65;
+  /* Prevents clashing of tamil modifiers */
+}
+
+/* Premium Typography Scale */
+h1 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.display {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.body-large {
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
+/* Humanic Animations */
+.animate-premium-fade {
+  animation: fadeIn 200ms ease-out forwards;
+}
+
+.hover-premium-scale {
+  transition: transform 150ms ease;
+}
+
+.hover-premium-scale:hover {
+  transform: scale(1.02);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Non-closable modal overlay */
+.modal-overlay {
+  backdrop-filter: blur(4px);
+  background: rgba(31, 41, 55, 0.85);
+  /* Deep slate overlays */
+}
+
+/* Calendar heatmap custom styles - Culturally adjusted */
+.react-calendar-heatmap .color-empty {
+  fill: #f3f4f6;
+}
+
+.react-calendar-heatmap .color-scale-1 {
+  fill: #fde68a;
+}
+
+/* Light Gold */
+.react-calendar-heatmap .color-scale-2 {
+  fill: #fbbf24;
+}
+
+.react-calendar-heatmap .color-scale-3 {
+  fill: #d97706;
+}
+
+.react-calendar-heatmap .color-scale-4 {
+  fill: #92400e;
+}
+
+/* Deep Ochre */
+
+/* Scrollbar styling - Minimal and sharp */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-600);
+}

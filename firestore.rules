@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profile: only the owner can read/write
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Daily progress: only the owner can read/write
+    match /dailyProgress/{progressId} {
+      allow read: if request.auth != null && (
+        progressId.startsWith(request.auth.uid + "_") || 
+        (resource != null && resource.data.uid == request.auth.uid)
+      );
+      allow write: if request.auth != null && (
+        progressId.startsWith(request.auth.uid + "_") || 
+        (request.resource != null && request.resource.data.uid == request.auth.uid)
+      );
+    }
+  }
+}
