@@ -11,6 +11,7 @@ import CalendarHeatmapComponent from "../components/analytics/CalendarHeatmap";
 import PaalPieChart from "../components/analytics/PaalPieChart";
 import NotesTimeline from "../components/analytics/NotesTimeline";
 import KuralCard from "../components/kural/KuralCard";
+import vaazhgaTamizh from "../assets/images/vaazhga_tamizh.png";
 
 const DashboardPage: React.FC = () => {
   const { userData } = useAuthStore();
@@ -64,10 +65,10 @@ const DashboardPage: React.FC = () => {
 
       <main className="flex-1">
         {/* Artistic Hero Section */}
-        <section className="bg-bg-surface border-b border-border-soft overflow-hidden relative">
+        <section className="bg-valluvan border-b border-border-soft overflow-hidden relative">
           <div className="absolute top-0 right-0 w-1/3 h-full bg-primary-500/5 -skew-x-12 translate-x-1/2" />
 
-          <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 relative">
+          <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="animate-premium-fade">
                 <p className="text-secondary-500 font-bold uppercase tracking-[0.3em] text-xs mb-4">
@@ -92,24 +93,36 @@ const DashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Today's Kural Card Showcase */}
-              <div
-                className="animate-premium-fade"
-                style={{ animationDelay: "0.2s" }}
-              >
-                <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[10px] mb-4 text-center">
-                  TODAY'S SACRED VERSE • இன்றைய குறள்
-                </h3>
-                {kural && <KuralCard kural={kural} />}
-              </div>
+              
+            </div>
+          </div>
+        </section>
+        <section className="max-w-7xl mx-auto px-4 py-16">
+          <div className="flex justify-center items-center mx-auto gap-8 py-10">
+            {/* Today's Kural Card Showcase */}
+            <div
+              className="animate-premium-fade w-1/2"
+              style={{ animationDelay: "0.2s" }}
+            >
+              <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[10px] mb-4 text-center">
+                TODAY'S SACRED VERSE • இன்றைய குறள்
+              </h3>
+              {kural && <KuralCard kural={kural} />}
+            </div>
+            <div className="w-1/2 h-full mx-auto">
+              <img
+                src={vaazhgaTamizh}
+                alt=""
+                className="w-full h-full object-cover p-3"
+              />
             </div>
           </div>
         </section>
 
         {/* Features & Insights Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-bg-surface p-8 border-l-4 border-primary-500 shadow-sm animate-premium-fade">
+        <section className="max-w-7xl mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+            <div className="bg-bg-surface p-8 border-l-4 border-t border-b border-secondary-500 shadow-sm animate-premium-fade">
               <h4 className="tamil-text text-xl font-bold text-text-primary mb-4">
                 வாழ்வியல் ஒழுக்கம்
               </h4>
@@ -121,7 +134,7 @@ const DashboardPage: React.FC = () => {
               </p>
             </div>
             <div
-              className="bg-bg-surface p-8 border-l-4 border-secondary-500 shadow-sm animate-premium-fade"
+              className="bg-bg-surface p-8 border-l-4 border-secondary-500 border-t border-b shadow-sm animate-premium-fade"
               style={{ animationDelay: "0.1s" }}
             >
               <h4 className="tamil-text text-xl font-bold text-text-primary mb-4">
@@ -135,7 +148,7 @@ const DashboardPage: React.FC = () => {
               </p>
             </div>
             <div
-              className="bg-bg-surface p-8 border-l-4 border-accent-500 shadow-sm animate-premium-fade"
+              className="bg-bg-surface p-8 border-l-4 border-r-4 border-t border-b border-secondary-500 shadow-sm animate-premium-fade"
               style={{ animationDelay: "0.2s" }}
             >
               <h4 className="tamil-text text-xl font-bold text-text-primary mb-4">

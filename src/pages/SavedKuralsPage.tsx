@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { useDailyKural } from "../hooks/useDailyKural";
+import { useAuthStore } from "../store/authStore";
+import { getSavedKurals } from "../services/firestoreService";
 import KuralCard from "../components/kural/KuralCard";
+import type { Kural } from "../types";
+import { Book, BookAIcon, Notebook, Shield } from "lucide-react";
 
 const SavedKuralsPage: React.FC = () => {
   const { hasCompletedDaily } = useDailyKural();
+  const { user } = useAuthStore();
+  const [savedKurals, setSavedKurals] = useState<Kural[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Note: Functionality follows existing codebase patterns
-  // Placeholder for saved kurals logic (to be integrated with actual bookmarking)
-  const savedKurals: any[] = [];
+  useEffect(() => {
+    const fetchSaved = async () => {
+      if (user) {
+        setLoading(true);
+        try {
+          const kurals = await getSavedKurals(user.uid);
+          setSavedKurals(kurals);
+        } catch (error) {
+          console.error("Error fetching saved kurals:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+    fetchSaved();
+  }, [user]);
 
   return (
     <div className="min-h-screen flex flex-col bg-bg-main">
@@ -32,53 +54,25 @@ const SavedKuralsPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Benefits Grid Section */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 animate-premium-fade"
-          style={{ animationDelay: "0.1s" }}
-        >
-          <div className="bg-bg-surface p-10 border border-border-soft shadow-premium text-center">
-            <div className="text-3xl mb-4">📖</div>
-            <h4 className="tamil-text font-bold text-text-primary mb-3">
-              மறுவாசிப்பு
-            </h4>
-            <p className="tamil-text text-text-secondary text-sm leading-relaxed">
-              ஓய்வு நேரங்களில் உங்களுக்குப் பிடித்த குறள்களை மட்டும் தனியாகப்
-              படித்து உங்கள் மனதைச் செம்மைப்படுத்தலாம்.
-            </p>
-          </div>
-          <div className="bg-bg-surface p-10 border border-border-soft shadow-premium text-center">
-            <div className="text-3xl mb-4">✍️</div>
-            <h4 className="tamil-text font-bold text-text-primary mb-3">
-              குறிப்புகள்
-            </h4>
-            <p className="tamil-text text-text-secondary text-sm leading-relaxed">
-              உண்பது, உறங்குவது என உங்கள் உரைகளிலோ அல்லது கடிதங்களிலோ மேற்கோள்
-              காட்டத் தேவையான குறள்களை எளிதாகக் கண்டறியலாம்.
-            </p>
-          </div>
-          <div className="bg-bg-surface p-10 border border-border-soft shadow-premium text-center">
-            <div className="text-3xl mb-4">🛡️</div>
-            <h4 className="tamil-text font-bold text-text-primary mb-3">
-              வழிகாட்டுதல்
-            </h4>
-            <p className="tamil-text text-text-secondary text-sm leading-relaxed">
-              உங்கள் வாழ்வின் சவால்களின் போது, அது தொடர்பாக நீங்கள் சேமித்த
-              குறள்கள் உங்களுக்குத் துணிவைத் தரும்.
-            </p>
-          </div>
-        </div>
+        
 
         {/* Saved Items List */}
         <div className="mb-24">
           <div className="flex items-center justify-between mb-12 border-b-2 border-primary-500 pb-4">
-            <h2 className="display text-text-primary">Your Collection</h2>
+            <h3 className="display text-2xl text-text-primary">சேமித்த குறள்கள் / Your Collection</h3>
             <div className="text-xs font-bold text-text-secondary uppercase tracking-widest">
               {savedKurals.length} Items Saved
             </div>
           </div>
 
-          {savedKurals.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-24">
+              <div className="w-12 h-12 mx-auto mb-4 border-4 border-primary-500 border-t-transparent animate-spin" />
+              <p className="tamil-text text-text-secondary font-bold uppercase tracking-widest text-xs">
+                பதிவிறக்கம் செய்கிறது...
+              </p>
+            </div>
+          ) : savedKurals.length > 0 ? (
             <div className="space-y-12">
               {savedKurals.map((kural) => (
                 <KuralCard key={kural.number} kural={kural} />
@@ -101,6 +95,43 @@ const SavedKuralsPage: React.FC = () => {
               </a>
             </div>
           )}
+        </div>
+
+        {/* Benefits Grid Section */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 animate-premium-fade"
+          style={{ animationDelay: "0.1s" }}
+        >
+          <div className="bg-bg-surface p-10 border border-border-soft shadow-premium text-center">
+            <Book className="mx-auto text-primary-500 mb-4" size={40}/>
+            <h4 className="tamil-text font-bold text-text-primary mb-3">
+              மறுவாசிப்பு
+            </h4>
+            <p className="tamil-text text-text-secondary text-sm leading-relaxed">
+              ஓய்வு நேரங்களில் உங்களுக்குப் பிடித்த குறள்களை மட்டும் தனியாகப்
+              படித்து உங்கள் மனதைச் செம்மைப்படுத்தலாம்.
+            </p>
+          </div>
+          <div className="bg-bg-surface p-10 border border-border-soft shadow-premium text-center">
+            <Notebook className="mx-auto text-primary-500 mb-4" size={40}/>
+            <h4 className="tamil-text font-bold text-text-primary mb-3">
+              குறிப்புகள்
+            </h4>
+            <p className="tamil-text text-text-secondary text-sm leading-relaxed">
+              உண்பது, உறங்குவது என உங்கள் உரைகளிலோ அல்லது கடிதங்களிலோ மேற்கோள்
+              காட்டத் தேவையான குறள்களை எளிதாகக் கண்டறியலாம்.
+            </p>
+          </div>
+          <div className="bg-bg-surface p-10 border border-border-soft shadow-premium text-center">
+            <Shield className="mx-auto text-primary-500 mb-4" size={40}/>
+            <h4 className="tamil-text font-bold text-text-primary mb-3">
+              வழிகாட்டுதல்
+            </h4>
+            <p className="tamil-text text-text-secondary text-sm leading-relaxed">
+              உங்கள் வாழ்வின் சவால்களின் போது, அது தொடர்பாக நீங்கள் சேமித்த
+              குறள்கள் உங்களுக்குத் துணிவைத் தரும்.
+            </p>
+          </div>
         </div>
 
         {/* Social Sharing Concept */}

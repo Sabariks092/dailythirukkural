@@ -9,6 +9,7 @@ import SearchPage from "./pages/SearchPage";
 import SavedKuralsPage from "./pages/SavedKuralsPage";
 import AboutPage from "./pages/AboutPage";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
+import "./App.css";
 
 const App: React.FC = () => {
   const { user, initialized } = useAuthStore();

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
+import vaazhgaTamizh from "../assets/images/vaazhga_tamizh.png"
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -34,31 +35,31 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center px-4 bg-bg-main">
       <div className="max-w-md w-full">
         {/* Logo & Title */}
-        <div className="text-center mb-10 animate-premium-fade">
-          <div className="w-20 h-20 mx-auto mb-6 bg-primary-500 flex items-center justify-center shadow-premium hover-premium-scale">
-            <span className="text-4xl text-white">📖</span>
+        <div className="text-center mb-5 animate-premium-fade">
+          <div className="w-32 h-32 mx-auto mb-2 flex items-center justify-center shadow-premium hover-premium-scale">
+            <img src={vaazhgaTamizh} alt={vaazhgaTamizh} />
           </div>
-          <h1 className="tamil-text text-3xl font-bold text-text-primary mb-2">
+          <h4 className="tamil-text text-2xl font-bold text-text-primary mb-2">
             தினசரி திருக்குறள்
-          </h1>
-          <p className="text-xs font-bold text-text-secondary uppercase tracking-[0.3em]">
+          </h4>
+          <p className="text-[11px] font-bold text-text-secondary uppercase tracking-[0.3em]">
             Daily Thirukkural • One Verse. One Day.
           </p>
         </div>
 
         {/* Login Form Container */}
         <div
-          className="bg-bg-surface border-t-8 border-primary-500 shadow-premium p-10 animate-premium-fade"
+          className="bg-bg-surface border-t-8 border-r border-b border-l border-primary-500 shadow-premium px-10 py-5 animate-premium-fade"
           style={{ animationDelay: "0.1s" }}
         >
-          <div className="mb-8 border-l-4 border-secondary-500 pl-4">
+          {/* <div className="mb-8 border-l-4 border-secondary-500 pl-4">
             <h2 className="text-xl font-bold text-text-primary uppercase tracking-widest">
               Welcome Back
             </h2>
             <p className="tamil-text text-text-secondary text-sm">
               உங்களது ஆன்மீகப் பயணத்தைத் தொடருங்கள்.
             </p>
-          </div>
+          </div> */}
 
           {error && (
             <div className="bg-secondary-500 text-white px-4 py-3 text-xs font-bold uppercase tracking-widest mb-6">
@@ -66,7 +67,7 @@ const LoginPage: React.FC = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-text-secondary uppercase tracking-widest block">
                 Email Address
@@ -98,7 +99,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-500 text-white py-4 font-bold uppercase tracking-[0.2em] transition-all hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-primary-500 text-white py-2 font-bold uppercase tracking-[0.2em] transition-all hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "AUTHENTICATING..." : "SIGN IN"}
             </button>

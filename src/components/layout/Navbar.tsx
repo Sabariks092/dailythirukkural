@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
+import vaazhgaTamizh from "../../assets/images/vaazhga_tamizh.png"
 
 interface NavbarProps {
   hasCompletedDaily: boolean;
@@ -31,14 +32,12 @@ const Navbar: React.FC<NavbarProps> = ({ hasCompletedDaily }) => {
 
   return (
     <nav className="bg-bg-surface border-b-2 border-primary-500 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 py-2">
         <div className="flex justify-between h-16">
           {/* Logo and Mobile Branding */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-primary-500 flex items-center justify-center text-white text-xl hover-premium-scale">
-                📖
-              </div>
+              <img src={vaazhgaTamizh} alt="" className="w-15 h-15 flex items-center justify-center text-white text-xl hover-premium-scale" />
               <div className="hidden sm:block">
                 <span className="tamil-text font-bold text-lg text-primary-500 block leading-none">
                   தினசரி திருக்குறள்

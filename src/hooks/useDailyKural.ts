@@ -2,11 +2,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuthStore } from "../store/authStore";
 import { fetchKural } from "../services/kuralApi";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../services/firebase";
 import {
   hasCompletedToday,
   getNextKuralToRead,
   saveDailyProgress,
 } from "../services/firestoreService";
+import { getTodayIST } from "../utils/dateUtils";
 import type { Kural } from "../types";
 
 interface UseDailyKuralReturn {
@@ -55,6 +58,17 @@ export const useDailyKural = (): UseDailyKuralReturn => {
         const kuralData = await fetchKural(nextKural);
         console.log("[useDailyKural] fetchKural result success");
         setKural(kuralData);
+      } else {
+        // Fetch today's completed kural to display in dashboard
+        const today = getTodayIST();
+        const ref = doc(db, "dailyProgress", `${user.uid}_${today}`);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          const progressData = snap.data();
+          const kuralData = await fetchKural(progressData.kuralNumber);
+          setKural(kuralData);
+          setKuralNumber(progressData.kuralNumber);
+        }
       }
     } catch (err: any) {
       setError(err.message);

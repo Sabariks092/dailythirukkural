@@ -7,6 +7,7 @@ import {
   query,
   where,
   getDocs,
+  deleteDoc,
   Timestamp,
   increment,
 } from "firebase/firestore";
@@ -172,4 +173,38 @@ export const getAllDailyProgress = async (
 export const getCompletedDates = async (uid: string): Promise<string[]> => {
   const progress = await getAllDailyProgress(uid);
   return progress.map((p) => p.date);
+};
+
+/**
+ * Save a kural to favorites
+ */
+export const saveKural = async (uid: string, kural: any): Promise<void> => {
+  const ref = doc(db, "savedKurals", `${uid}_${kural.number}`);
+  await setDoc(ref, {
+    uid,
+    kural,
+    savedAt: Timestamp.now(),
+  });
+};
+
+/**
+ * Remove a saved kural
+ */
+export const removeSavedKural = async (
+  uid: string,
+  kuralNumber: number,
+): Promise<void> => {
+  const ref = doc(db, "savedKurals", `${uid}_${kuralNumber}`);
+  await deleteDoc(ref);
+};
+
+/**
+ * Get all saved kurals for a user
+ */
+export const getSavedKurals = async (uid: string): Promise<any[]> => {
+  const q = query(collection(db, "savedKurals"), where("uid", "==", uid));
+  const snap = await getDocs(q);
+  return snap.docs
+    .map((d) => d.data().kural)
+    .sort((a, b) => a.number - b.number);
 };

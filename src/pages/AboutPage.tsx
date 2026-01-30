@@ -15,7 +15,7 @@ const AboutPage: React.FC = () => {
         <section className="bg-bg-surface border-b border-border-soft overflow-hidden relative">
           <div className="absolute top-0 right-0 w-1/4 h-full bg-primary-500/5 -skew-x-12 translate-x-1/4" />
 
-          <div className="max-w-4xl mx-auto px-4 py-16 md:py-24 relative text-center">
+          <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative text-center">
             <div className="animate-premium-fade">
               <p className="text-secondary-500 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">
                 OUR MISSION • எமது நோக்கம்
@@ -32,7 +32,7 @@ const AboutPage: React.FC = () => {
         </section>
 
         {/* Content Section */}
-        <section className="max-w-4xl mx-auto px-4 py-16">
+        <section className="max-w-7xl mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
             <div className="animate-premium-fade">
               <h2 className="display text-text-primary mb-8">எமது நோக்கம்</h2>
@@ -100,7 +100,7 @@ const AboutPage: React.FC = () => {
             style={{ animationDelay: "0.2s" }}
           >
             <h2 className="display text-text-primary mb-8 text-center">
-              கலாச்சாரப் பாதுகாப்பு
+              உண்மையான கலாச்சாரப் பாதுகாப்பு
             </h2>
             <div className="bg-bg-main p-10 border border-border-soft">
               <p className="tamil-text text-text-secondary text-lg leading-relaxed text-center mb-8">
@@ -142,7 +142,7 @@ const AboutPage: React.FC = () => {
         </section>
 
         {/* Cultural Context Section from 02_daily_kural.md */}
-        <section className="max-w-4xl mx-auto px-4 py-24 border-t border-border-soft">
+        <section className="max-w-7xl mx-auto px-4 py-24 border-t border-border-soft">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div className="animate-premium-fade">
               <h2 className="display text-text-primary mb-8 underline decoration-primary-500 underline-offset-8">

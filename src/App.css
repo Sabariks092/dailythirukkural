@@ -1,0 +1,5 @@
+.bg-valluvan {
+  background-image: url(../src/assets/images/valluvan.jpg);
+  background-size: cover;
+  background-position: center;
+}

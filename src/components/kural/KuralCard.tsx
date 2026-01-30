@@ -1,5 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import type { Kural } from "../../types";
+import { useAuthStore } from "../../store/authStore";
+import {
+  saveKural,
+  removeSavedKural,
+  getSavedKurals,
+} from "../../services/firestoreService";
+import { Bookmark, BookmarkCheck, Volume2 } from "lucide-react";
 
 interface KuralCardProps {
   kural: Kural;
@@ -7,6 +14,68 @@ interface KuralCardProps {
 }
 
 const KuralCard: React.FC<KuralCardProps> = ({ kural, showDetails = true }) => {
+  const { user } = useAuthStore();
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  useEffect(() => {
+    const checkSaved = async () => {
+      if (user) {
+        const saved = await getSavedKurals(user.uid);
+        setIsSaved(saved.some((s: any) => s.number === kural.number));
+      }
+    };
+    checkSaved();
+  }, [user, kural.number]);
+
+  const handleSave = async () => {
+    if (!user) {
+      alert("Please login to save Kurals");
+      return;
+    }
+
+    try {
+      if (isSaved) {
+        await removeSavedKural(user.uid, kural.number);
+        setIsSaved(false);
+      } else {
+        await saveKural(user.uid, kural);
+        setIsSaved(true);
+      }
+    } catch (error) {
+      console.error("Error saving kural:", error);
+    }
+  };
+
+  const handleSpeak = () => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const textToRead = `${kural.line1}. ${kural.line2}. Explanation: ${kural.en}. Tamil Meaning: ${kural.urai1}`;
+    const utterance = new SpeechSynthesisUtterance(textToRead);
+
+    // Try to find a female voice
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice = voices.find(
+      (v) =>
+        v.name.toLowerCase().includes("female") ||
+        v.name.toLowerCase().includes("woman") ||
+        v.name.toLowerCase().includes("google uk english female"),
+    );
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
   return (
     <div className="bg-bg-surface border-2 border-primary-500 p-8 shadow-premium hover-premium-scale transition-all animate-premium-fade">
       <div className="flex justify-between items-start mb-6">
@@ -15,19 +84,33 @@ const KuralCard: React.FC<KuralCardProps> = ({ kural, showDetails = true }) => {
             Kural {kural.number}
           </div>
           <button
-            className="w-8 h-8 flex items-center justify-center border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white transition-all focus:outline-none"
+            onClick={handleSpeak}
+            className={`w-8 h-8 flex items-center justify-center border-2 border-primary-500 transition-all focus:outline-none ${isSpeaking ? "bg-primary-500 text-white" : "text-primary-500 hover:bg-primary-500 hover:text-white"}`}
             title="Listen to Kural"
           >
-            🔊
+            <Volume2 size={16} />
           </button>
         </div>
-        <div className="text-right">
-          <p className="tamil-text text-primary-600 font-bold text-sm">
-            {kural.paal}
-          </p>
-          <p className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">
-            {kural.athigaram}
-          </p>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleSave}
+            className={`text-primary-500 hover:scale-110 transition-transform ${isSaved ? "text-secondary-500" : ""}`}
+            title={isSaved ? "Remove from saved" : "Save Kural"}
+          >
+            {isSaved ? (
+              <BookmarkCheck size={24} fill="currentColor" />
+            ) : (
+              <Bookmark size={24} />
+            )}
+          </button>
+          <div className="text-right">
+            <p className="tamil-text text-primary-600 font-bold text-sm">
+              {kural.paal}
+            </p>
+            <p className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">
+              {kural.athigaram}
+            </p>
+          </div>
         </div>
       </div>
 

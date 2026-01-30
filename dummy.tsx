@@ -1,162 +1,62 @@
-import React, { useState, useEffect, useMemo } from "react";
+// Search Page - Browse and search all Kurals
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { useDailyKural } from "../hooks/useDailyKural";
 import { fetchKural } from "../services/kuralApi";
 import type { Kural } from "../types";
 import KuralCard from "../components/kural/KuralCard";
-import { Search } from "lucide-react";
 
 const SearchPage: React.FC = () => {
   const { hasCompletedDaily } = useDailyKural();
-  const [allKurals, setAllKurals] = useState<Kural[]>([]);
+  const [kurals, setKurals] = useState<Kural[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedPaal, setSelectedPaal] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [kuralNumberInput, setKuralNumberInput] = useState<number>(1);
-  const [pageInput, setPageInput] = useState<number>(1);
 
   const kuralPerPage = 10;
 
-  // Optimize: Load initial kurals fast, background load the rest politely
+  // Fetch kurals for current page
   useEffect(() => {
-    let isMounted = true;
-    const loadAllKurals = async () => {
-      try {
-        const cached = localStorage.getItem("all_kurals");
-        if (cached) {
-          try {
-            const parsed = JSON.parse(cached);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setAllKurals(parsed);
-              return;
-            }
-          } catch (e) {
-            localStorage.removeItem("all_kurals");
-          }
+    const loadKurals = async () => {
+      setLoading(true);
+      const start = (currentPage - 1) * kuralPerPage + 1;
+      const end = Math.min(start + kuralPerPage - 1, 1330);
+
+      const fetchedKurals: Kural[] = [];
+      for (let i = start; i <= end; i++) {
+        try {
+          const kural = await fetchKural(i);
+          fetchedKurals.push(kural);
+        } catch (error) {
+          console.error(`Failed to fetch kural ${i}`);
         }
-
-        // 1. FAST INITIAL LOAD: Fetch first 20 kurals using Promise.all
-        setLoading(true);
-        const initialBatch = [];
-        for (let i = 1; i <= 20; i++) {
-          initialBatch.push(fetchKural(i).catch(() => null));
-        }
-
-        const initialResults = await Promise.all(initialBatch);
-        const validInitial = initialResults.filter(
-          (k): k is Kural => k !== null,
-        );
-
-        if (isMounted) {
-          setAllKurals(validInitial);
-          setLoading(false); // UI becomes interactive instantly
-        }
-
-        // 2. POLITE BACKGROUND LOAD: Load remaining batches with delay
-        const fullKurals: Kural[] = [...validInitial];
-        const batchSize = 30; // Larger batches
-        for (let i = 21; i <= 1330; i += batchSize) {
-          if (!isMounted) break;
-
-          const batch = [];
-          for (let j = i; j < i + batchSize && j <= 1330; j++) {
-            batch.push(fetchKural(j).catch(() => null));
-          }
-
-          const results = await Promise.all(batch);
-          const validBatch = results.filter((k): k is Kural => k !== null);
-          fullKurals.push(...validBatch);
-
-          if (isMounted && i % 150 === 21) {
-            setAllKurals([...fullKurals]);
-          }
-
-          // Polite delay: 300ms between batches of 30 to avoid rate limits
-          await new Promise((resolve) => setTimeout(resolve, 300));
-        }
-
-        if (isMounted) {
-          setAllKurals(fullKurals);
-          if (fullKurals.length > 1300) {
-            try {
-              localStorage.setItem("all_kurals", JSON.stringify(fullKurals));
-            } catch (e) {
-              console.warn("localStorage full, skipping cache");
-            }
-          }
-        }
-      } catch (err) {
-        console.error("SearchPage loading error:", err);
-      } finally {
-        if (isMounted) setLoading(false);
       }
+
+      setKurals(fetchedKurals);
+      setLoading(false);
     };
 
-    loadAllKurals();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  // Filter kurals based on search query and selected Paal
-  const filteredKurals = useMemo(() => {
-    return allKurals.filter((k) => {
-      const query = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !query ||
-        k.number.toString() === query ||
-        k.line1.toLowerCase().includes(query) ||
-        k.line2.toLowerCase().includes(query) ||
-        k.en.toLowerCase().includes(query) ||
-        k.athigaram.toLowerCase().includes(query) ||
-        k.urai1.toLowerCase().includes(query) ||
-        k.urai2.toLowerCase().includes(query);
-
-      const matchesPaal =
-        selectedPaal === "all" ||
-        (selectedPaal === "aram" && k.number <= 380) ||
-        (selectedPaal === "porul" && k.number > 380 && k.number <= 1080) ||
-        (selectedPaal === "inbam" && k.number > 1080);
-
-      return matchesSearch && matchesPaal;
-    });
-  }, [allKurals, searchQuery, selectedPaal]);
-
-  // Paginated kurals for display
-  const paginatedKurals = useMemo(() => {
-    const start = (currentPage - 1) * kuralPerPage;
-    return filteredKurals.slice(start, start + kuralPerPage);
-  }, [filteredKurals, currentPage]);
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredKurals.length / kuralPerPage),
-  );
-
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedPaal]);
-
-  const handleFetchKural = () => {
-    if (kuralNumberInput < 1 || kuralNumberInput > 1330) return;
-    setSearchQuery(kuralNumberInput.toString());
-  };
-
-  const handleJumpToPage = () => {
-    const page =
-      typeof pageInput === "string" ? parseInt(pageInput) : pageInput;
-    if (isNaN(page) || page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  // Sync page input with current page
-  useEffect(() => {
-    setPageInput(currentPage);
+    loadKurals();
   }, [currentPage]);
+
+  // Fetch single kural by number
+  const handleFetchKural = async () => {
+    if (kuralNumberInput < 1 || kuralNumberInput > 1330) return;
+
+    setLoading(true);
+    try {
+      const kural = await fetchKural(kuralNumberInput);
+      setKurals([kural]);
+    } catch (error) {
+      console.error("Failed to fetch kural");
+    }
+    setLoading(false);
+  };
+
+  const totalPages = Math.ceil(1330 / kuralPerPage);
 
   return (
     <div className="min-h-screen flex flex-col bg-bg-main">
@@ -204,7 +104,7 @@ const SearchPage: React.FC = () => {
 
         {/* Search & Filters Controls */}
         <div className="bg-bg-surface border-2 border-primary-500 p-8 shadow-premium mb-12 animate-premium-fade">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Kural Number Search */}
             <div className="space-y-3">
               <label className="text-[10px] font-bold text-text-secondary uppercase tracking-widest block">
@@ -213,12 +113,12 @@ const SearchPage: React.FC = () => {
               <div className="flex gap-0">
                 <input
                   type="number"
+                  min={1}
                   max={1330}
                   value={kuralNumberInput}
                   onChange={(e) =>
-                    setKuralNumberInput(parseInt(e.target.value) || 0)
+                    setKuralNumberInput(parseInt(e.target.value) || 1)
                   }
-                  onKeyDown={(e) => e.key === "Enter" && handleFetchKural()}
                   className="flex-1 px-4 py-3 border-2 border-border-soft focus:border-primary-500 outline-none transition-all font-bold"
                   placeholder="1-1330"
                 />
@@ -231,52 +131,18 @@ const SearchPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Jump to Page */}
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-text-secondary uppercase tracking-widest block">
-                Jump to Page
-              </label>
-              <div className="flex gap-0">
-                <input
-                  type="number"
-                  max={totalPages}
-                  value={pageInput}
-                  onChange={(e) => setPageInput(parseInt(e.target.value) || 0)}
-                  onKeyDown={(e) => e.key === "Enter" && handleJumpToPage()}
-                  className="flex-1 px-4 py-3 border-2 border-border-soft focus:border-primary-500 outline-none transition-all font-bold"
-                  placeholder={`1-${totalPages}`}
-                />
-                <button
-                  onClick={handleJumpToPage}
-                  className="px-6 py-3 bg-secondary-500 text-white font-bold hover:bg-secondary-600 transition-all uppercase text-xs tracking-widest"
-                >
-                  GO
-                </button>
-              </div>
-            </div>
-
             {/* Text Search */}
             <div className="space-y-3">
               <label className="text-[10px] font-bold text-text-secondary uppercase tracking-widest block">
                 Full Text Search
               </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="tamil-text w-full px-4 py-3 pr-12 border-2 border-border-soft focus:border-primary-500 outline-none transition-all"
-                  placeholder="தேடல்... (Search Tamil/English)"
-                  onKeyDown={(e) => e.key === "Enter" && handleFetchKural()}
-                />
-                <button
-                  onClick={handleFetchKural}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-primary-500 hover:text-primary-600 transition-colors"
-                  aria-label="Search"
-                >
-                  <Search size={20} />
-                </button>
-              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="tamil-text w-full px-4 py-3 border-2 border-border-soft focus:border-primary-500 outline-none transition-all"
+                placeholder="தேடல்... (Search Tamil/English)"
+              />
             </div>
 
             {/* Paal Filter */}
@@ -306,32 +172,18 @@ const SearchPage: React.FC = () => {
               <p className="tamil-text text-text-secondary font-bold uppercase tracking-widest text-xs">
                 தரவுகளைத் திரட்டுகிறது...
               </p>
-              <p className="text-[10px] text-text-secondary mt-2">
-                Initial load may take a few seconds as we cache all 1330 Kurals.
-              </p>
             </div>
           ) : (
             <div className="space-y-8">
-              {paginatedKurals.length > 0 ? (
-                paginatedKurals.map((kural) => (
-                  <KuralCard key={kural.number} kural={kural} />
-                ))
-              ) : (
-                <div className="text-center py-12">
-                  <p className="tamil-text text-text-secondary">
-                    முடிவுகள் எதுவும் இல்லை.
-                  </p>
-                  <p className="text-xs text-text-secondary uppercase tracking-widest mt-2">
-                    No results found for your search.
-                  </p>
-                </div>
-              )}
+              {kurals.map((kural) => (
+                <KuralCard key={kural.number} kural={kural} />
+              ))}
             </div>
           )}
         </div>
 
         {/* Pagination */}
-        {filteredKurals.length > kuralPerPage && !loading && (
+        {kurals.length > 1 && !loading && (
           <div className="flex items-center justify-center gap-4 py-8 border-t border-border-soft">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
