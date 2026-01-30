@@ -6,7 +6,7 @@ import { useAuthStore } from "../store/authStore";
 import { getSavedKurals } from "../services/firestoreService";
 import KuralCard from "../components/kural/KuralCard";
 import type { Kural } from "../types";
-import { Book, BookAIcon, Notebook, Shield } from "lucide-react";
+import { Book, Notebook, Shield } from "lucide-react";
 
 const SavedKuralsPage: React.FC = () => {
   const { hasCompletedDaily } = useDailyKural();
