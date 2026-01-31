@@ -145,7 +145,7 @@ const DashboardPage: React.FC = () => {
           <div className="flex justify-center items-center mx-auto gap-8 py-10">
             {/* Today's Kural Card Showcase */}
             <div
-              className="animate-premium-fade w-1/2"
+              className="animate-premium-fade md:w-1/2 w-full"
               style={{ animationDelay: "0.2s" }}
             >
               <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[10px] mb-4 text-center">
@@ -153,7 +153,7 @@ const DashboardPage: React.FC = () => {
               </h3>
               {kural && <KuralCard kural={kural} />}
             </div>
-            <div className="w-1/2 h-full mx-auto">
+            <div className="md:w-1/2 w-full h-full mx-auto">
               {/* <img
                 src={vaazhgaTamizh}
                 alt=""
