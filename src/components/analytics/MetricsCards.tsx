@@ -1,6 +1,13 @@
 // Metrics Cards Component for Dashboard
 import React from "react";
 import type { AnalyticsData } from "../../types";
+import {
+  BookOpenIcon,
+  ChartPieIcon,
+  FileWarning,
+  FlameIcon,
+  StarIcon,
+} from "lucide-react";
 
 interface MetricsCardsProps {
   analytics: AnalyticsData;
@@ -12,28 +19,32 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ analytics }) => {
       label: "Total Completed",
       value: analytics.totalCompleted,
       suffix: "/ 1330",
-      icon: "📖",
+      icon: <BookOpenIcon className="w-12 h-12" />,
       color: "from-emerald-500 to-emerald-600",
     },
     {
       label: "Current Streak",
       value: analytics.currentStreak,
       suffix: "days",
-      icon: "🔥",
+      icon: <FlameIcon className="w-12 h-12" />,
       color: "from-orange-500 to-red-500",
     },
     {
       label: "Completion",
-      value: analytics.completionPercentage.toFixed(1),
-      suffix: "%",
-      icon: "📊",
+      value: `${analytics.completionPercentage.toFixed(1)}%`,
+      icon: <ChartPieIcon className="w-12 h-12" />,
       color: "from-blue-500 to-indigo-600",
     },
     {
       label: "Missed Days",
       value: analytics.missedDays,
       suffix: "to catch up",
-      icon: analytics.missedDays > 0 ? "⚠️" : "✨",
+      icon:
+        analytics.missedDays > 0 ? (
+          <FileWarning className="w-12 h-12" />
+        ) : (
+          <StarIcon className="w-12 h-12" />
+        ),
       color:
         analytics.missedDays > 0
           ? "from-amber-500 to-orange-500"
@@ -50,18 +61,19 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ analytics }) => {
           style={{ animationDelay: `${index * 0.1}s` }}
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-2xl">{metric.icon}</span>
-            <div
-              className={`w-10 h-10 rounded-full bg-gradient-to-br ${metric.color} opacity-20`}
-            />
+            <div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-gray-800">
+                  {metric.value}
+                </span>
+                {metric.suffix && (
+                  <span className="text-gray-500 text-sm">{metric.suffix}</span>
+                )}
+              </div>
+              <p className="text-gray-600 text-sm mt-1">{metric.label}</p>
+            </div>
+            <span className="text-2xl text-primary-500">{metric.icon}</span>
           </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold text-gray-800">
-              {metric.value}
-            </span>
-            <span className="text-gray-500 text-sm">{metric.suffix}</span>
-          </div>
-          <p className="text-gray-600 text-sm mt-1">{metric.label}</p>
         </div>
       ))}
     </div>

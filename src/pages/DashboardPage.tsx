@@ -92,33 +92,10 @@ const DashboardPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-
-              
             </div>
           </div>
         </section>
-        <section className="max-w-7xl mx-auto px-4 py-16">
-          <div className="flex justify-center items-center mx-auto gap-8 py-10">
-            {/* Today's Kural Card Showcase */}
-            <div
-              className="animate-premium-fade w-1/2"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[10px] mb-4 text-center">
-                TODAY'S SACRED VERSE • இன்றைய குறள்
-              </h3>
-              {kural && <KuralCard kural={kural} />}
-            </div>
-            <div className="w-1/2 h-full mx-auto">
-              <img
-                src={vaazhgaTamizh}
-                alt=""
-                className="w-full h-full object-cover p-3"
-              />
-            </div>
-          </div>
-        </section>
-
+   
         {/* Features & Insights Section */}
         <section className="max-w-7xl mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
@@ -162,7 +139,46 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mb-12 border-b border-border-soft pb-4">
+          
+
+               <section className="max-w-7xl mx-auto px-4 py-16">
+          <div className="flex justify-center items-center mx-auto gap-8 py-10">
+            {/* Today's Kural Card Showcase */}
+            <div
+              className="animate-premium-fade w-1/2"
+              style={{ animationDelay: "0.2s" }}
+            >
+              <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[10px] mb-4 text-center">
+                TODAY'S SACRED VERSE • இன்றைய குறள்
+              </h3>
+              {kural && <KuralCard kural={kural} />}
+            </div>
+            <div className="w-1/2 h-full mx-auto">
+              {/* <img
+                src={vaazhgaTamizh}
+                alt=""
+                className="w-full h-full object-cover p-3"
+              /> */}
+              <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span className="w-2 h-2 bg-accent-500" />
+                Your Recent Reflections
+              </h3>
+              {analytics !== null ? (
+                <NotesTimeline
+                  progressList={analytics.dailyProgressList.slice(0, 5)}
+                />
+              ):(
+                <p className="text-gray-500 text-center py-8">
+                  Your reflections will appear here after you complete your first
+                  reading.
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+
+       <section>
+         <div className="mb-12 border-b border-border-soft pb-4">
             <h2 className="display text-text-primary text-center">
               Your Progress Dashboard
             </h2>
@@ -170,6 +186,7 @@ const DashboardPage: React.FC = () => {
               Analytical insights into your spiritual journey
             </p>
           </div>
+
 
           {/* Metrics & Analytics */}
           {analytics && (
@@ -199,20 +216,14 @@ const DashboardPage: React.FC = () => {
                     <PaalPieChart paalProgress={analytics.paalProgress} />
                   </div>
 
-                  <div className="bg-bg-surface p-8 border border-border-soft shadow-premium overflow-hidden">
-                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-accent-500" />
-                      Recent Reflections
-                    </h3>
-                    <NotesTimeline
-                      progressList={analytics.dailyProgressList.slice(0, 5)}
-                    />
-                  </div>
                 </div>
               </div>
             </div>
           )}
+       </section>
         </section>
+
+        
 
         {/* Motivational Quote */}
         <section className="bg-primary-500 text-white py-16 text-center">

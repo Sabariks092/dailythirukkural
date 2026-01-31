@@ -59,7 +59,7 @@ const CalendarHeatmapComponent: React.FC<CalendarHeatmapProps> = ({
       </h3>
 
       <div className="overflow-x-auto">
-        <div className="min-w-[700px]">
+        <div className="min-w-[350px] p-4 h-[50vh]">
           <CalendarHeatmap
             startDate={startDate}
             endDate={endDate}
@@ -82,8 +82,8 @@ const CalendarHeatmapComponent: React.FC<CalendarHeatmapProps> = ({
             className="w-3 h-3 rounded-sm bg-[#e5e7eb]"
             title="Not started"
           />
-          <div className="w-3 h-3 rounded-sm bg-[#d1fae5]" title="Missed" />
-          <div className="w-3 h-3 rounded-sm bg-[#047857]" title="Completed" />
+          <div className="w-3 h-3 rounded-sm bg-[#FDE68A]" title="Missed" />
+          <div className="w-3 h-3 rounded-sm bg-[#92400E]" title="Completed" />
         </div>
         <span>More</span>
       </div>

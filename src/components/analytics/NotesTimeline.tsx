@@ -2,6 +2,7 @@
 import React from "react";
 import type { DailyProgress } from "../../types";
 import { formatDate } from "../../utils/dateUtils";
+import { NotebookPenIcon } from "lucide-react";
 
 interface NotesTimelineProps {
   progressList: DailyProgress[];
@@ -28,11 +29,11 @@ const NotesTimeline: React.FC<NotesTimelineProps> = ({ progressList }) => {
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-        <span>📝</span> Recent Reflections
+        <span><NotebookPenIcon/></span> Recent Reflections
       </h3>
 
       <div className="space-y-4">
-        {recentProgress.map((progress) => (
+        {recentProgress.slice(0, 4).map((progress) => (
           <div
             key={progress.date}
             className="relative pl-6 pb-4 border-l-2 border-emerald-200 last:pb-0 last:border-l-transparent"

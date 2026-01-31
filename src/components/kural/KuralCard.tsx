@@ -117,10 +117,10 @@ const KuralCard: React.FC<KuralCardProps> = ({ kural, showDetails = true }) => {
       <div className="relative mb-8 text-center">
         <div className="absolute top-1/2 left-0 w-full h-px bg-primary-100 -z-10" />
         <div className="bg-bg-surface px-4 inline-block">
-          <p className="tamil-text text-2xl md:text-3xl text-text-primary font-bold leading-relaxed">
+          <p className="tamil-text text-lg md:text-lg text-text-primary text-left font-bold leading-relaxed">
             {kural.line1}
           </p>
-          <p className="tamil-text text-2xl md:text-3xl text-text-primary font-bold leading-relaxed mt-2">
+          <p className="tamil-text text-lg md:text-lg text-text-primary text-left font-bold leading-relaxed mt-2">
             {kural.line2}
           </p>
         </div>
