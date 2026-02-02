@@ -11,7 +11,7 @@ import CalendarHeatmapComponent from "../components/analytics/CalendarHeatmap";
 import PaalPieChart from "../components/analytics/PaalPieChart";
 import NotesTimeline from "../components/analytics/NotesTimeline";
 import KuralCard from "../components/kural/KuralCard";
-import vaazhgaTamizh from "../assets/images/vaazhga_tamizh.png";
+// import vaazhgaTamizh from "../assets/images/vaazhga_tamizh.png";
 
 const DashboardPage: React.FC = () => {
   const { userData } = useAuthStore();
