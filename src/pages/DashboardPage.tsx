@@ -95,11 +95,11 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
         </section>
-   
+
         {/* Features & Insights Section */}
         <section className="max-w-7xl mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
-            <div className="bg-bg-surface p-8 border-l-4 border-t border-b border-secondary-500 shadow-sm animate-premium-fade">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-bg-surface p-8 border-l-4  md:border-r-0 border-r-4 border-t border-b border-secondary-500 shadow-sm animate-premium-fade">
               <h4 className="tamil-text text-xl font-bold text-text-primary mb-4">
                 வாழ்வியல் ஒழுக்கம்
               </h4>
@@ -111,7 +111,7 @@ const DashboardPage: React.FC = () => {
               </p>
             </div>
             <div
-              className="bg-bg-surface p-8 border-l-4 border-secondary-500 border-t border-b shadow-sm animate-premium-fade"
+              className="bg-bg-surface p-8 border-l-4 md:border-r-0 border-r-4 border-secondary-500 border-t border-b shadow-sm animate-premium-fade"
               style={{ animationDelay: "0.1s" }}
             >
               <h4 className="tamil-text text-xl font-bold text-text-primary mb-4">
@@ -125,7 +125,7 @@ const DashboardPage: React.FC = () => {
               </p>
             </div>
             <div
-              className="bg-bg-surface p-8 border-l-4 border-r-4 border-t border-b border-secondary-500 shadow-sm animate-premium-fade"
+              className="bg-bg-surface p-8 border-l-4  border-r-4 border-t border-b border-secondary-500 shadow-sm animate-premium-fade"
               style={{ animationDelay: "0.2s" }}
             >
               <h4 className="tamil-text text-xl font-bold text-text-primary mb-4">
@@ -136,94 +136,88 @@ const DashboardPage: React.FC = () => {
                 உங்களுக்குப் பிடித்த அல்லது உங்களுக்கு வழிகாட்டிய குறள்களைத்
                 தனியாகச் சேமித்தல்.
               </p>
-            </div>
+            </div> 
           </div>
 
-          
-
-               <section className="max-w-7xl mx-auto px-4 py-16">
-          <div className="flex justify-center items-center mx-auto gap-8 py-10">
-            {/* Today's Kural Card Showcase */}
-            <div
-              className="animate-premium-fade md:w-1/2 w-full"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[10px] mb-4 text-center">
-                TODAY'S SACRED VERSE • இன்றைய குறள்
-              </h3>
-              {kural && <KuralCard kural={kural} />}
-            </div>
-            <div className="md:w-1/2 w-full h-full mx-auto">
-              {/* <img
+          <section className="max-w-7xl mx-auto md:px-4 py-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center mx-auto gap-8 py-10">
+              {/* Today's Kural Card Showcase */}
+              <div
+                className="animate-premium-fade "
+                style={{ animationDelay: "0.2s" }}
+              >
+                <h3 className="text-secondary-500 font-bold uppercase tracking-widest text-[14px] mb-4 text-center">
+                  TODAY'S SACRED VERSE • இன்றைய குறள்
+                </h3>
+                {kural && <KuralCard kural={kural} />}
+              </div>
+              <div className="">
+                {/* <img
                 src={vaazhgaTamizh}
                 alt=""
                 className="w-full h-full object-cover p-3"
               /> */}
-              <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
+                {/* <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span className="w-2 h-2 bg-accent-500" />
                 Your Recent Reflections
-              </h3>
-              {analytics !== null ? (
-                <NotesTimeline
-                  progressList={analytics.dailyProgressList.slice(0, 5)}
-                />
-              ):(
-                <p className="text-gray-500 text-center py-8">
-                  Your reflections will appear here after you complete your first
-                  reading.
-                </p>
-              )}
-            </div>
-          </div>
-        </section>
-
-       <section>
-         <div className="mb-12 border-b border-border-soft pb-4">
-            <h2 className="display text-text-primary text-center">
-              Your Progress Dashboard
-            </h2>
-            <p className="text-text-secondary text-center uppercase tracking-widest text-xs font-bold mt-2">
-              Analytical insights into your spiritual journey
-            </p>
-          </div>
-
-
-          {/* Metrics & Analytics */}
-          {analytics && (
-            <div className="space-y-12">
-              <MetricsCards analytics={analytics} />
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
-                  <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-primary-500" />
-                    Activity Heatmap
-                  </h3>
-                  {userData && (
-                    <CalendarHeatmapComponent
-                      progressList={analytics.dailyProgressList}
-                      signupDate={userData.signupDate}
-                    />
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 gap-8">
-                  <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
-                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-secondary-500" />
-                      Category Distribution
-                    </h3>
-                    <PaalPieChart paalProgress={analytics.paalProgress} />
-                  </div>
-
-                </div>
+              </h3> */}
+                {analytics !== null ? (
+                  <NotesTimeline
+                    progressList={analytics.dailyProgressList.slice(0, 5)}
+                  />
+                ) : (
+                  <p className="text-gray-500 text-center py-8">
+                    Your reflections will appear here after you complete your
+                    first reading.
+                  </p>
+                )}
               </div>
             </div>
-          )}
-       </section>
-        </section>
+          </section>
 
-        
+          <section>
+            <div className="mb-12 border-b border-border-soft pb-4">
+              <h2 className="display text-text-primary text-center">
+                Your Progress Dashboard
+              </h2>
+              <p className="text-text-secondary text-center uppercase tracking-widest text-xs font-bold mt-2">
+                Analytical insights into your spiritual journey
+              </p>
+            </div>
+
+            {/* Metrics & Analytics */}
+            {analytics && (
+              <div className="space-y-12">
+                <MetricsCards analytics={analytics} />
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
+                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary-500" />
+                      Activity Heatmap
+                    </h3>
+                    {userData && (
+                      <CalendarHeatmapComponent
+                        progressList={analytics.dailyProgressList}
+                        signupDate={userData.signupDate}
+                      />
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-8">
+                    <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
+                      <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-secondary-500" />
+                        Category Distribution
+                      </h3>
+                      <PaalPieChart paalProgress={analytics.paalProgress} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+        </section>
 
         {/* Motivational Quote */}
         <section className="bg-primary-500 text-white py-16 text-center">

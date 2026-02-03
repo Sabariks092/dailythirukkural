@@ -77,11 +77,21 @@ const KuralCard: React.FC<KuralCardProps> = ({ kural, showDetails = true }) => {
   };
 
   return (
-    <div className="bg-bg-surface border-2 border-primary-500 p-8 shadow-premium hover-premium-scale transition-all animate-premium-fade">
+    <div className="bg-bg-surface border-2 border-primary-500 md:p-8 p-4 shadow-premium hover-premium-scale transition-all animate-premium-fade">
+   <div className=" mb-2">
+        <div className="text-right md:hidden block">
+            <p className="tamil-text text-primary-600 font-bold text-sm">
+              {kural.paal}
+            </p>
+            <p className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">
+              {kural.athigaram}
+            </p>
+          </div>
+      </div>     
       <div className="flex justify-between items-start mb-6">
         <div className="flex items-center gap-3">
-          <div className="bg-primary-500 text-white px-3 py-1 text-xs font-bold tracking-widest uppercase">
-            Kural {kural.number}
+          <div className="bg-primary-500 text-white px-2 md:px-3 py-2 text-[9px] md:text-xs font-bold tracking-widest uppercase">
+            குறள் {kural.number}
           </div>
           <button
             onClick={handleSpeak}
@@ -92,7 +102,16 @@ const KuralCard: React.FC<KuralCardProps> = ({ kural, showDetails = true }) => {
           </button>
         </div>
         <div className="flex items-center gap-4">
-          <button
+         
+          <div className="text-right hidden md:block">
+            <p className="tamil-text text-primary-600 font-bold text-sm">
+              {kural.paal}
+            </p>
+            <p className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">
+              {kural.athigaram}
+            </p>
+          </div>
+           <button
             onClick={handleSave}
             className={`text-primary-500 hover:scale-110 transition-transform ${isSaved ? "text-secondary-500" : ""}`}
             title={isSaved ? "Remove from saved" : "Save Kural"}
@@ -103,16 +122,9 @@ const KuralCard: React.FC<KuralCardProps> = ({ kural, showDetails = true }) => {
               <Bookmark size={24} />
             )}
           </button>
-          <div className="text-right">
-            <p className="tamil-text text-primary-600 font-bold text-sm">
-              {kural.paal}
-            </p>
-            <p className="text-text-secondary text-[10px] font-bold uppercase tracking-widest">
-              {kural.athigaram}
-            </p>
-          </div>
         </div>
       </div>
+   
 
       <div className="relative mb-8 text-center">
         <div className="absolute top-1/2 left-0 w-full h-px bg-primary-100 -z-10" />

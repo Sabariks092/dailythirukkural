@@ -33,7 +33,7 @@ const NotesTimeline: React.FC<NotesTimelineProps> = ({ progressList }) => {
       </h3>
 
       <div className="space-y-4">
-        {recentProgress.slice(0, 4).map((progress) => (
+        {recentProgress.slice(0, 5).map((progress) => (
           <div
             key={progress.date}
             className="relative pl-6 pb-4 border-l-2 border-emerald-200 last:pb-0 last:border-l-transparent"
