@@ -137,10 +137,10 @@ const DailyKuralModal: React.FC<DailyKuralModalProps> = ({
                 Deep Explanation
               </h3>
               <p className="tamil-text text-text-secondary text-sm leading-relaxed">
-                {kural.urai2}
+                {kural.urai1}
               </p>
               <p className="text-[10px] text-primary-600 font-bold uppercase tracking-tighter">
-                — {kural.urai2Author}
+                — {kural.urai1Author}
               </p>
             </div>
           </div>

@@ -7,7 +7,7 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import DailyKuralModal from "../components/kural/DailyKuralModal";
 import MetricsCards from "../components/analytics/MetricsCards";
-import CalendarHeatmapComponent from "../components/analytics/CalendarHeatmap";
+import CalendarHeatmapComponent from "../components/analytics/CalendarHeatmap2";
 import PaalPieChart from "../components/analytics/PaalPieChart";
 import NotesTimeline from "../components/analytics/NotesTimeline";
 import KuralCard from "../components/kural/KuralCard";
@@ -136,7 +136,7 @@ const DashboardPage: React.FC = () => {
                 உங்களுக்குப் பிடித்த அல்லது உங்களுக்கு வழிகாட்டிய குறள்களைத்
                 தனியாகச் சேமித்தல்.
               </p>
-            </div> 
+            </div>
           </div>
 
           <section className="max-w-7xl mx-auto md:px-4 py-16">
@@ -188,22 +188,17 @@ const DashboardPage: React.FC = () => {
             {/* Metrics & Analytics */}
             {analytics && (
               <div className="space-y-12">
-                <MetricsCards analytics={analytics} />
-
+                <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-primary-500" />
+                  Activity Heatmap
+                </h3>
+                {userData && (
+                  <CalendarHeatmapComponent
+                    progressList={analytics.dailyProgressList}
+                    signupDate={userData.signupDate}
+                  />
+                )}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                  <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
-                    <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
-                      <span className="w-2 h-2 bg-primary-500" />
-                      Activity Heatmap
-                    </h3>
-                    {userData && (
-                      <CalendarHeatmapComponent
-                        progressList={analytics.dailyProgressList}
-                        signupDate={userData.signupDate}
-                      />
-                    )}
-                  </div>
-
                   <div className="grid grid-cols-1 gap-8">
                     <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
                       <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-6 flex items-center gap-2">
@@ -212,6 +207,9 @@ const DashboardPage: React.FC = () => {
                       </h3>
                       <PaalPieChart paalProgress={analytics.paalProgress} />
                     </div>
+                  </div>
+                  <div className="bg-bg-surface p-8 border border-border-soft shadow-premium">
+                    <MetricsCards analytics={analytics} />
                   </div>
                 </div>
               </div>

@@ -53,7 +53,7 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ analytics }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
       {metrics.map((metric, index) => (
         <div
           key={metric.label}
@@ -61,7 +61,9 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ analytics }) => {
           style={{ animationDelay: `${index * 0.1}s` }}
         >
           <div className="flex items-center justify-between mb-3">
-            <div>
+   
+            <span className="text-2xl text-primary-500">{metric.icon}</span>
+                     <div>
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-bold text-gray-800">
                   {metric.value}
@@ -72,7 +74,6 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ analytics }) => {
               </div>
               <p className="text-gray-600 text-sm mt-1">{metric.label}</p>
             </div>
-            <span className="text-2xl text-primary-500">{metric.icon}</span>
           </div>
         </div>
       ))}

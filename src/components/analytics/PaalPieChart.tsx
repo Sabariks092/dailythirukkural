@@ -16,13 +16,13 @@ const PaalPieChart: React.FC<PaalPieChartProps> = ({ paalProgress }) => {
       name: "அறத்துப்பால் (Virtue)",
       completed: paalProgress.aram,
       total: 380,
-      color: "#10b981",
+      color: "#92400E",
     },
     {
       name: "பொருட்பால் (Wealth)",
       completed: paalProgress.porul,
       total: 700,
-      color: "#3b82f6",
+      color: "#FDE68A",
     },
     {
       name: "காமத்துப்பால் (Love)",
