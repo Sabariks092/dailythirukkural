@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import type { DailyProgress } from "../../types";
 import { getTodayIST, formatDate } from "../../utils/dateUtils";
+import type { JSX } from "react";
 
 /**
  * CUSTOM GITHUB-STYLE HEATMAP BY MONTH
